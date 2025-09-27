@@ -21,8 +21,10 @@ datasource db {
   title String
   content String
   published Boolean @default(true)
+
   authorId Int
   author User @relation(fields: [authorId],references: [user_id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -38,8 +40,10 @@ enum UserRole {
 model User {
   user_id  Int  @id @default(autoincrement())
   username  String 
+  
   email   String   @unique
   role UserRole @default(user)
+
   profile Profile? // One to one relation
   post Post[] // One to Many relation
 
