@@ -11,14 +11,28 @@ const update = async () => {
     },
   }); */
 
- /*  const updateMany = await prisma.post.updateMany({
+  /*  const updateMany = await prisma.post.updateMany({
     where: { author: "MR Mokles" },
     data: {
       authorName: "Ab Hamid",
     },
   }); */
 
-//   console.log(updateMany);
+  // Update Title or Create New One
+  /* const upsertData = await prisma.post.upsert({
+    where: { id: 2 },
+    update: {
+      title: "Updated Title 3333",
+    },
+    create: {
+      title: "This is titles 2222",
+      content: "This is content",
+      authorName: "Hamid Khan",
+      author: "MR Mokles",
+    },
+  }); */
+
+    // console.log(upsertData);
 };
 
 update();
