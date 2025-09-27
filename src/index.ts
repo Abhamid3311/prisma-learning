@@ -13,10 +13,6 @@ const main = async () => {
   });
 
   console.log(result); */
-
-  const getData= await prisma.post.findMany();
-
-  console.log(getData); 
 };
 
 main();
