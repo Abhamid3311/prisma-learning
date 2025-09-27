@@ -8,7 +8,65 @@ datasource db {
 }
 
 
-model post {
+/*
+1. User to Profile = 1 to 1 
+2. User to Post = 1 to Many
+3. Post to Category = Many to Many
+*/
+
+// Module-02
+
+ model Post {
+  post_id Int @id @default(autoincrement())
+  title String
+  content String
+  published Boolean @default(true)
+  authorId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+   @@map("posts") 
+}
+
+enum UserRole {
+  user
+  admin
+}
+model User {
+  user_id      Int      @id @default(autoincrement())
+  username  String 
+  email   String   @unique
+  role UserRole
+  profile Profile? // One to one relation
+
+   @@map("users")
+}
+
+model Profile {
+  profile_id     Int     @id @default(autoincrement())
+  bio    String?
+  userId Int   @unique
+  user User @relation(fields: [userId],references: [user_id])
+
+  @@map("profiles") 
+}
+
+model Category{
+  category_id Int @id @default(autoincrement())
+  name String
+
+  @@map("categories")
+}
+
+
+
+
+
+
+
+
+// Module -01
+/* model post {
   id Int @id @default(autoincrement())
   title String
   content String
@@ -19,45 +77,6 @@ model post {
   updatedAt DateTime @updatedAt
 
   @@map("posts")
-}
+} */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
-
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
-}
- */
 
