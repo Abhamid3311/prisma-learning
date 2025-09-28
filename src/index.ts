@@ -17,7 +17,6 @@ const main = async () => {
       },
     },
   });
-
   console.log("getId:", groupPost);
 };
 
