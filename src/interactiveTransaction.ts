@@ -3,30 +3,30 @@ import { PrismaClient, UserRole } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const main = async () => {
-  // Batch Transaction
-  const createUser = prisma.user.create({
-    data: {
-      username: "Fahim55 Ahmed",
-      age: 25,
-      email: "fahim55@gmail.com",
-      role: UserRole.user,
-    },
+  // Interactive Transaction
+  const result = await prisma.$transaction(async (transactionClient) => {
+    // Query 1
+    const getALLPost = await transactionClient.post.findMany({
+      where: { published: true },
+    });
+
+    // Query-2
+    const countUser = await transactionClient.user.count();
+
+    // Query-3
+    const updateUser = await transactionClient.user.update({
+      where: { user_id: 18 },
+      data: { age: 20 },
+    });
+
+    return {
+      getALLPost,
+      countUser,
+      updateUser,
+    };
   });
 
-  const updateUser = prisma.user.update({
-    where: { user_id: 18 },
-    data: {
-      age: 8,
-    },
-  });
-
-  // Depends each other, If 1 failed then whole process failed
-  const [createData, UpdateData] = await prisma.$transaction([
-    createUser,
-    updateUser,
-  ]);
-
-//   console.log("Update User", updateUser);
+  console.log("Update User", result);
 };
 
 main();
