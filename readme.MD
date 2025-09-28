@@ -52,7 +52,14 @@ model User {
 
 ```
 npx prisma migrate dev // and give a name
+npx prisma generate // If only generate needed [rare case, less use]
 
 npx prisma studio // To View all data prisma provide  a GUI
+
+npx prisma format // For Format Prisma code if auto no working
+
+npx prisma db pull // to get excisting DB Schema
+
+npx prisma // Get all Prisma command
 
 ```

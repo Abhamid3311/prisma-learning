@@ -7,62 +7,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-/*
-1. User to Profile = 1 to 1 
-2. User to Post = 1 to Many
-3. Post to Category = Many to Many
-*/
+/**
+ * 1. User to Profile = 1 to 1
+ * 2. User to Post = 1 to Many
+ * 3. Post to Category = Many to Many
+ */
 
 // Module-02
 
- model Post {
-  post_id Int @id @default(autoincrement())
-  title String
-  content String
+model Post {
+  post_id   Int     @id @default(autoincrement())
+  title     String
+  content   String
   published Boolean @default(true)
 
   authorId Int
-  author User @relation(fields: [authorId],references: [user_id])
+  author   User @relation(fields: [authorId], references: [user_id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   postCategory PostCategory[]
 
-   @@map("posts") 
+  @@map("posts")
 }
 
 enum UserRole {
   user
   admin
 }
+
 model User {
-  user_id  Int  @id @default(autoincrement())
-  username  String 
-  age Int @default(10)
-  
-  email   String   @unique
-  role UserRole @default(user)
+  user_id  Int    @id @default(autoincrement())
+  username String
+  age      Int    @default(10)
+
+  email String   @unique
+  role  UserRole @default(user)
 
   profile Profile? // One to one relation
-  post Post[] // One to Many relation
+  post    Post[] // One to Many relation
 
-   @@map("users")
+  @@map("users")
 }
 
 model Profile {
-  profile_id     Int     @id @default(autoincrement())
-  bio    String?
-  userId Int   @unique
-  user User @relation(fields: [userId],references: [user_id])
+  profile_id Int     @id @default(autoincrement())
+  bio        String?
+  userId     Int     @unique
+  user       User    @relation(fields: [userId], references: [user_id])
 
-  @@map("profiles") 
+  @@map("profiles")
 }
 
-model Category{
-  category_id Int @id @default(autoincrement())
-  name String
+model Category {
+  category_id Int    @id @default(autoincrement())
+  name        String
 
   postCategory PostCategory[]
 
@@ -70,34 +70,28 @@ model Category{
 }
 
 // Composit Table
-model PostCategory{
+model PostCategory {
   postId Int
-  post Post @relation(fields: [postId], references: [post_id])
+  post   Post @relation(fields: [postId], references: [post_id])
 
   categoryId Int
-  category Category @relation(fields: [categoryId], references: [category_id])
+  category   Category @relation(fields: [categoryId], references: [category_id])
 
-
-  @@id([postId,categoryId])
+  @@id([postId, categoryId])
   @@map("post_category")
 }
 
-
-
-
-
 // Module -01
-/* model post {
-  id Int @id @default(autoincrement())
-  title String
-  content String
-  published Boolean @default(true)
-  authorName String?
-  author String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("posts")
-} */
-
-
+/**
+ * model post {
+ * id Int @id @default(autoincrement())
+ * title String
+ * content String
+ * published Boolean @default(true)
+ * authorName String?
+ * author String?
+ * createdAt DateTime @default(now())
+ * updatedAt DateTime @updatedAt
+ * @@map("posts")
+ * }
+ */
